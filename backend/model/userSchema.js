@@ -21,30 +21,27 @@ const taskSchema = new mongoose.Schema({
   });
   
   
-
-const userSchema = new mongoose.Schema({
-  email: {
-    type: String,
-    required: true,
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-  tasks: {
-    type: [taskSchema],
-    required: function () {
-      // If the role is 'employee', tasks are required
-      return this.role === 'employee';
+  const userSchema = new mongoose.Schema({
+    email: {
+      type: String,
+      required: true,
     },
-  },
-  role: {
-    type: String,
-    enum: ['admin', 'employee'],
-    required: true,
-  },
-});
+    password: {
+      type: String,
+      required: true,
+    },
+    tasks: {
+      type: [taskSchema],
+      // default: undefined, // Make tasks initially undefined (optional)
+    },
+    role: {
+      type: String,
+      enum: ['admin', 'employee'],
+      required: true,
+    },
+  });
 
 const User = mongoose.model('User', userSchema);
+const Task = mongoose.model('Task', taskSchema);
 
-module.exports = User;
+module.exports = {User, Task};

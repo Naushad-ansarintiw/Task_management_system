@@ -1,15 +1,51 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate from React Router
 
 const Register = () => {
-  const [email, setEmail] = useState('');
-  const [role, setRole] = useState('employee');
-  const [newPassword, setNewPassword] = useState('');
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+    role: '', // Set role based on user selection (admin or employee)
+  });
 
-  const handleSubmit = (e) => {
+  const navigate = useNavigate(); // Initialize the useNavigate hook
+
+  const handleInputChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Your registration logic goes here
-    console.log('Registration submitted:', { email, role, newPassword });
+    try {
+      // Make a POST request to the registration endpoint using fetch
+      const response = await fetch('http://localhost:4040/api/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data); // Assuming the server sends back some data upon successful registration
+        // Check the role and navigate accordingly
+        if (data.role === 'admin') {
+          navigate('/admin');
+        } else if (data.role === 'employee') {
+          navigate('/employee');
+        }
+      } else {
+        console.error('Failed to register user:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error registering user:', error);
+    }
+
   };
 
   return (
@@ -23,9 +59,10 @@ const Register = () => {
             </label>
             <input
               type="email"
-              id="email"
+              name="email"
+              value={formData.email}
               className="w-full px-3 py-2 border rounded shadow appearance-none"
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={handleInputChange}
               required
             />
           </div>
@@ -34,12 +71,15 @@ const Register = () => {
               Role
             </label>
             <select
-              id="role"
+              name="role"
+              value={formData.role}
               className="w-full px-3 py-2 border rounded shadow appearance-none"
-              onChange={(e) => setRole(e.target.value)}
+              onChange={handleInputChange}
+              required
             >
-              <option value="employee">Employee</option>
+              <option value="">Select Role</option>
               <option value="admin">Admin</option>
+              <option value="employee">Employee</option>
             </select>
           </div>
           <div className="mb-4">
@@ -48,9 +88,10 @@ const Register = () => {
             </label>
             <input
               type="password"
-              id="newPassword"
+              name="password"
+              value={formData.password}
               className="w-full px-3 py-2 border rounded shadow appearance-none"
-              onChange={(e) => setNewPassword(e.target.value)}
+              onChange={handleInputChange}
               required
             />
           </div>

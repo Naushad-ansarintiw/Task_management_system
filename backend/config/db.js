@@ -5,7 +5,7 @@ const connectDB= async()=>{
     DB=process.env.DATA_BASE
     try{
 
-       const conn = await  mongoose.connect(DB,{useUnifiedTopology: true,useNewUrlParser: true})
+       const conn = await  mongoose.connect(DB);
     
        console.log(`MongoDB connected: ${conn.connection.host}`)
     }

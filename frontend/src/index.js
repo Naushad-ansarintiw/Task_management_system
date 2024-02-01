@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom/client';
 import Root from './components/root';
 import SignIn from './components/signin'
 import Register from './components/register';
+import Admin from './components/Admin';
 
 import {
   createBrowserRouter,
@@ -22,6 +23,14 @@ const router = createBrowserRouter([
   {
     path: "/register",
     element: <Register />
+  },
+  {
+    path: "/admin",
+    element: <Admin />,
+  }, 
+  {
+    path: "/admin/assign-task", 
+    element: <Admin />
   }
 ]);
 const root = ReactDOM.createRoot(document.getElementById('root'));
