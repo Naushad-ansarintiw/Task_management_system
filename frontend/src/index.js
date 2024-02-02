@@ -10,6 +10,7 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
+import Employee from './components/Employee';
 
 const router = createBrowserRouter([
   {
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
   {
     path: "/admin/assign-task", 
     element: <Admin />
+  },
+  {
+    path: "/employee/:employeeId",
+    element: <Employee />
   }
 ]);
 const root = ReactDOM.createRoot(document.getElementById('root'));

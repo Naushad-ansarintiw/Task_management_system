@@ -2,7 +2,7 @@
 const asyncHandler = require('express-async-handler')
 
 // importing User model from models
-const {User, Task} = require('../model/userSchema')
+const { User, Task } = require('../model/userSchema')
 
 // registerUser Logic 
 const registerUser = asyncHandler(async (req, res) => {
@@ -110,4 +110,21 @@ const assignTask = asyncHandler(async (req, res) => {
   }
 })
 
-module.exports = { registerUser, authUser, usersEmail , assignTask}
+
+const getUser = asyncHandler(async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.json(user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+})
+
+module.exports = { registerUser, authUser, usersEmail, assignTask, getUser }

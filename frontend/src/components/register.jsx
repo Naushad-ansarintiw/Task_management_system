@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate from React Router
+import Employee from './Employee';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -37,7 +38,7 @@ const Register = () => {
         if (data.role === 'admin') {
           navigate('/admin');
         } else if (data.role === 'employee') {
-          navigate('/employee');
+          navigate(`/employee/${data._id}`);
         }
       } else {
         console.error('Failed to register user:', response.statusText);
